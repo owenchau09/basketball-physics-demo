@@ -8,7 +8,7 @@ public class PhysicsShape {
 	private Shape s;
 	
 	private double vx, vy;
-	private final double gravity = 5;
+	private final double gravity = 2;
 	
 	public PhysicsShape(Shape s) {
 		this.s = s;
