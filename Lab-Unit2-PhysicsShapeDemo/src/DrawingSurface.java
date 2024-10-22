@@ -11,7 +11,7 @@ import processing.core.PApplet;
 public class DrawingSurface extends PApplet {
 
 	private PhysicsShape holding, basketball;
-	private Rectangle backboard, hoop;
+	private Rectangle backboard, hoop, top, left, right, bottom;
 	private Line connector1, connector2, connector3, net1, net2, net3, net4, neth1, neth2, neth3, neth4;
 	
 	
@@ -21,7 +21,7 @@ public class DrawingSurface extends PApplet {
 //		shape.stroker(Color.BLACK);
 //		shape.strokePower(5);
 		
-		basketball = new PhysicsShape(new Rectangle(100, 100, 50, 50));
+		basketball = new PhysicsShape(new Circle(100, 100, 50));
 		basketball.color(Color.ORANGE);
 		basketball.stroker(Color.BLACK);
 		basketball.strokePower(5);
@@ -93,6 +93,11 @@ public class DrawingSurface extends PApplet {
 		neth4.color(Color.WHITE);
 		neth4.stroker(Color.BLACK);
 		neth4.strokePower(1);
+		
+		top = new Rectangle(0, 0, 800, 0);
+		bottom = new Rectangle(600, 0, 800, 0);
+		left = new Rectangle(0, 0, 0, 600);
+		right = new Rectangle(800, 0, 0, 600);
 	}
 	
 	public void settings() {
@@ -111,7 +116,7 @@ public class DrawingSurface extends PApplet {
 	// line is executed again.
 	public void draw() {
 		
-		basketball.act();
+		basketball.act(top, bottom, left, right);
 		
 		background(255);
 		basketball.draw(this);
