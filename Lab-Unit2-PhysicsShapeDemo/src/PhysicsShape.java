@@ -8,7 +8,7 @@ import processing.core.PApplet;
 
 public class PhysicsShape {
 
-	private Shape s;
+	private Shape s, temp;
 	
 	private double vx, vy;
 	private final double gravity = 1.5;
@@ -22,18 +22,39 @@ public class PhysicsShape {
 	
 	public void draw(PApplet surface) {
 		s.draw(surface);
+		temp.draw(surface);
 	}
 	
-	public void act(Rectangle top, Rectangle bottom, Rectangle left, Rectangle right) {
+	public void act(Rectangle top, Rectangle bottom, Rectangle left, Rectangle right, Rectangle c1) {
 		s.setPositionX(s.getX() + vx);
 		s.setPositionY(s.getY() + vy);
 		
+		//real radius is radius/2
 		if(s instanceof Circle) {
 			Circle c = (Circle) s;
-			Rectangle hitbox = new Rectangle(c.getX()-c.getPerimeter()/(2*Math.PI), c.getY()-c.getPerimeter()/(2*Math.PI), 2*c.getPerimeter()/(2*Math.PI), 2*c.getPerimeter()/(2*Math.PI));
-			if(hitbox.isTouching(top) || hitbox.isTouching(bottom) || hitbox.isTouching(left) || hitbox.isTouching(right)) {
-				vx *= -1;
-				vy *= -1;
+			double radius = c.getPerimeter()/(4*Math.PI);
+//			System.out.println(radius);
+			Rectangle hitbox = new Rectangle(c.getX()-radius, c.getY()-radius, 2*radius, 2*radius);
+			temp = hitbox;
+			temp.color(Color.WHITE);
+			temp.stroker(Color.BLACK);
+			temp.strokePower(1);
+			System.out.println((hitbox.isTouching(top) || hitbox.isTouching(bottom) || hitbox.isTouching(left) || hitbox.isTouching(right)));
+			if(hitbox.isTouching(top)) {
+				s.setPositionY(s.getY() + 5);
+			    vy *= -0.8;
+			}
+			else if(hitbox.isTouching(bottom) || hitbox.isTouching(c1)) {
+				s.setPositionY(s.getY() - 5);
+			    vy *= -0.8;
+			}
+			else if(hitbox.isTouching(left)) {
+				s.setPositionX(s.getX() + 5);
+			    vx *= -0.8; 
+			}
+			else if(hitbox.isTouching(right)) {
+				s.setPositionX(s.getX() - 5);
+			    vx *= -0.8; 
 			}
 		}
 		
