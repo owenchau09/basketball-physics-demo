@@ -29,10 +29,9 @@ public class PhysicsShape {
 		s.setPositionX(s.getX() + vx);
 		s.setPositionY(s.getY() + vy);
 		
-		//real radius is radius/2
 		if(s instanceof Circle) {
 			Circle c = (Circle) s;
-			double radius = c.getPerimeter()/(4*Math.PI);
+			double radius = c.getPerimeter()/(2*Math.PI);
 //			System.out.println(radius);
 			Rectangle hitbox = new Rectangle(c.getX()-radius, c.getY()-radius, 2*radius, 2*radius);
 			temp = hitbox;
