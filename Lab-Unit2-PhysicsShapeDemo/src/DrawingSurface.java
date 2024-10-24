@@ -102,7 +102,7 @@ public class DrawingSurface extends PApplet {
 		neth4.strokePower(1);
 		
 		top = new Rectangle(0, 0, 800, 2);
-		bottom = new Rectangle(0, 600, 800, 10);
+		bottom = new Rectangle(0, 600, 800, 100);
 		left = new Rectangle(0, 0, 2, 600);
 		right = new Rectangle(800, 0, -2, 600);
 		top.color(Color.WHITE);
@@ -179,7 +179,7 @@ public class DrawingSurface extends PApplet {
 				return;
 			}
 		}
-		PhysicsShape ball = new PhysicsShape(new Circle(mouseX, mouseY, 50));
+		PhysicsShape ball = new PhysicsShape(new Circle(mouseX, mouseY, 25));
 		ball.color(Color.ORANGE);
 		ball.stroker(Color.BLACK);
 		ball.strokePower(1);

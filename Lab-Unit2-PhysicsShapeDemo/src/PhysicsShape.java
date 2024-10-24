@@ -39,19 +39,20 @@ public class PhysicsShape {
 			temp.stroker(Color.BLACK);
 			temp.strokePower(1);
 			System.out.println((hitbox.isTouching(top) || hitbox.isTouching(bottom) || hitbox.isTouching(left) || hitbox.isTouching(right)));
+			
 			if(hitbox.isTouching(top)) {
 				s.setPositionY(s.getY() + 5);
 			    vy *= -0.8;
 			}
-			else if(hitbox.isTouching(bottom) || hitbox.isTouching(c1)) {
+			if(hitbox.isTouching(bottom) || hitbox.isTouching(c1)) {
 				s.setPositionY(s.getY() - 5);
 			    vy *= -0.8;
 			}
-			else if(hitbox.isTouching(left)) {
+			if(hitbox.isTouching(left)) {
 				s.setPositionX(s.getX() + 5);
 			    vx *= -0.8; 
 			}
-			else if(hitbox.isTouching(right)) {
+			if(hitbox.isTouching(right)) {
 				s.setPositionX(s.getX() - 5);
 			    vx *= -0.8; 
 			}
