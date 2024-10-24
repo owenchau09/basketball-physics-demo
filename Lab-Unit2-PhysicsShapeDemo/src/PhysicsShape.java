@@ -11,7 +11,7 @@ public class PhysicsShape {
 	private Shape s, temp;
 	
 	private double vx, vy;
-	private final double gravity = 1.5;
+	private final double gravity = 1.2;
 	
 	public PhysicsShape(Shape s) {
 		this.s = s;
@@ -22,25 +22,26 @@ public class PhysicsShape {
 	
 	public void draw(PApplet surface) {
 		s.draw(surface);
-		temp.draw(surface);
+//		temp.draw(surface);
 	}
 	
-	public void act(Rectangle top, Rectangle bottom, Rectangle left, Rectangle right, Rectangle c1) {
+	public void act(Rectangle top, Rectangle bottom, Rectangle left, Rectangle right, Rectangle c1, Rectangle c2, Rectangle backboard, double cx, double cy) {
+		accelerate(cx, cy);
 		s.setPositionX(s.getX() + vx);
 		s.setPositionY(s.getY() + vy);
+		
 		
 		if(s instanceof Circle) {
 			Circle c = (Circle) s;
 			double radius = c.getPerimeter()/(2*Math.PI);
-//			System.out.println(radius);
 			Rectangle hitbox = new Rectangle(c.getX()-radius, c.getY()-radius, 2*radius, 2*radius);
 			temp = hitbox;
 			temp.color(Color.WHITE);
 			temp.stroker(Color.BLACK);
 			temp.strokePower(1);
-			System.out.println((hitbox.isTouching(top) || hitbox.isTouching(bottom) || hitbox.isTouching(left) || hitbox.isTouching(right)));
+//			System.out.println((hitbox.isTouching(top) || hitbox.isTouching(bottom) || hitbox.isTouching(left) || hitbox.isTouching(right)));
 			
-			if(hitbox.isTouching(top)) {
+			if(hitbox.isTouching(top) || hitbox.isTouching(c2)) {
 				s.setPositionY(s.getY() + 5);
 			    vy *= -0.8;
 			}
@@ -52,7 +53,7 @@ public class PhysicsShape {
 				s.setPositionX(s.getX() + 5);
 			    vx *= -0.8; 
 			}
-			if(hitbox.isTouching(right)) {
+			if(hitbox.isTouching(right) || hitbox.isTouching(backboard)) {
 				s.setPositionX(s.getX() - 5);
 			    vx *= -0.8; 
 			}
@@ -62,8 +63,8 @@ public class PhysicsShape {
 	}
 	
 	public void accelerate(double cvelx, double cvely) {
-		vx = (vx + cvelx*1.3);
-		vy = (-vy + cvely*1.3 + gravity);
+		vx = (vx + cvelx*1.1);
+		vy = (-vy + cvely*1.1 + gravity);
 	}
 	
 	public void color(Color color) {
@@ -81,13 +82,5 @@ public class PhysicsShape {
 	public boolean isPointInside(double x, double y) {
 		return s.isPointInside(x, y);
 	}
-	
-//	public boolean isCircleTouchingLine(Shape s) {
-//		if(s instanceof Circle) {
-//			
-//		}
-//		else if(s instanceof Line) {
-//			
-//		}	
-//	}
+
 }

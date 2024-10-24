@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import agandhi523.sheeps.Circle;
 import agandhi523.sheeps.Line;
@@ -10,45 +11,42 @@ import processing.core.PApplet;
 
 
 public class DrawingSurface extends PApplet {
-
-	private PhysicsShape holding, basketball;
-	private Rectangle backboard, hoop, top, left, right, bottom, c1;
-	private Line connector1, connector2, connector3, net1, net2, net3, net4, neth1, neth2, neth3, neth4;
-	private ArrayList<PhysicsShape> balls = new ArrayList<PhysicsShape>();
 	
+	private PhysicsShape holding, basketball;
+	private Rectangle backboard, hoop, top, left, right, bottom, c1, c2, c3;
+	private Line connector3, net1, net2, net3, net4, neth1, neth2, neth3, neth4;
+	private ArrayList<PhysicsShape> balls = new ArrayList<PhysicsShape>();
+	private ArrayList<Double> cx = new ArrayList<Double>(Collections.nCopies(100, 0.0));
+	private ArrayList<Double> cy = new ArrayList<Double>(Collections.nCopies(100, 0.0));
+	private ArrayList<Boolean> hold = new ArrayList<Boolean>();
 	
 	public DrawingSurface() {
-//		shape = new PhysicsShape(new Rectangle(100, 100, 50, 50));
-//		shape.color(Color.WHITE);
-//		shape.stroker(Color.BLACK);
-//		shape.strokePower(5);
-		
-		basketball = new PhysicsShape(new Circle(100, 100, 25));
+		basketball = new PhysicsShape(new Circle(100, 100, 20));
 		basketball.color(Color.ORANGE);
 		basketball.stroker(Color.BLACK);
 		basketball.strokePower(5);
+		balls.add(basketball);
 		holding = null;
-		
 
 		backboard = new Rectangle(800-15-6, 300-90, 15, 90);
 		backboard.color(Color.WHITE);
 		backboard.stroker(Color.BLACK);
 		backboard.strokePower(3);
 		
-//		connector1 = new Line(800-15-6-30, 2.0/3*90+300-90, 800-15-6, 2.0/3*90+300-90);
-//		connector1.color(Color.WHITE);
-//		connector1.stroker(Color.BLACK);
-//		connector1.strokePower(1);
-		
 		c1 = new Rectangle(800-15-6-30, 2.0/3*90+300-90, 30, 0);
 		c1.color(Color.WHITE);
 		c1.stroker(Color.BLACK);
 		c1.strokePower(1);
 		
-		connector2 = new Line(800-15-6-15, 2.0/3*90+300-90+15, 800-15-6, 2.0/3*90+300-90+15);
-		connector2.color(Color.WHITE);
-		connector2.stroker(Color.BLACK);
-		connector2.strokePower(1);
+		c2 = new Rectangle(800-15-6-15, 2.0/3*90+300-90+15, 15, 0);
+		c2.color(Color.WHITE);
+		c2.stroker(Color.BLACK);
+		c2.strokePower(1);
+		
+		c3 = new Rectangle(800-15-6-15, 2.0/3*90+300-90+15, 15, 0);
+		c3.color(Color.WHITE);
+		c3.stroker(Color.BLACK);
+		c3.strokePower(1);
 		
 		connector3 = new Line(800-15-6-15, 2.0/3*90+300-90+15, 800-15-6-30, 2.0/3*90+300-90+5);
 		connector3.color(Color.WHITE);
@@ -101,10 +99,10 @@ public class DrawingSurface extends PApplet {
 		neth4.stroker(Color.BLACK);
 		neth4.strokePower(1);
 		
-		top = new Rectangle(0, 0, 800, 2);
-		bottom = new Rectangle(0, 600, 800, 100);
-		left = new Rectangle(0, 0, 2, 600);
-		right = new Rectangle(800, 0, -2, 600);
+		top = new Rectangle(0, 0, 800, 0);
+		bottom = new Rectangle(0, 600, 800, 0);
+		left = new Rectangle(0, 0, 0, 600);
+		right = new Rectangle(800, 0, 0, 600);
 		top.color(Color.WHITE);
 		top.stroker(Color.BLACK);
 		top.strokePower(1);
@@ -135,22 +133,20 @@ public class DrawingSurface extends PApplet {
 	// line is executed again.
 	public void draw() {
 		
-		basketball.act(top, bottom, left, right, c1);
-		
 		background(255);
-		basketball.draw(this);
+
 		
 		for(int i = 0; i < balls.size(); i++) {
-			balls.get(i).act(top, bottom, left, right, c1);
+			balls.get(i).act(top, bottom, left, right, c1, c2, backboard, cx.get(i), cy.get(i));
 			balls.get(i).draw(this);
 		}
 		
 		
 		backboard.draw(this);
-//		connector1.draw(this);
-//		connector2.draw(this);
-//		connector3.draw(this);
+		connector3.draw(this);
 		c1.draw(this);
+		c2.draw(this);
+		c3.draw(this);
 		
 		hoop.draw(this);
 		net1.draw(this);
@@ -162,34 +158,34 @@ public class DrawingSurface extends PApplet {
 		neth3.draw(this);
 		neth4.draw(this);
 		
-		top.draw(this);
-		bottom.draw(this);
-		left.draw(this);
-		right.draw(this);
+//		top.draw(this);
+//		bottom.draw(this);
+//		left.draw(this);
+//		right.draw(this);
 	}
 	
 	public void mousePressed() {
-		if(basketball.isPointInside(mouseX, mouseY)) {
-			holding = basketball;
-			return;
-		}
 		for(int i = 0; i < balls.size(); i++) {
 			if(balls.get(i).isPointInside(mouseX, mouseY)) {
 				holding = balls.get(i);
 				return;
 			}
 		}
-		PhysicsShape ball = new PhysicsShape(new Circle(mouseX, mouseY, 25));
+		PhysicsShape ball = new PhysicsShape(new Circle(mouseX, mouseY, 20));
 		ball.color(Color.ORANGE);
 		ball.stroker(Color.BLACK);
-		ball.strokePower(1);
+		ball.strokePower(3);
 		balls.add(ball);
 	}
 	
 	public void mouseReleased() {
-		if(holding != null) {
-			holding.accelerate(mouseX-pmouseX, mouseY-pmouseY);
-			holding = null;
+		for(int i = 0; i < balls.size(); i++) {
+			if(hold.get(i) == true) {
+				cx.set(i, (double) (mouseX-pmouseX));
+				cy.set(i, (double) (mouseY-pmouseY));
+				holding = null;
+			}
+			
 		}
 	}
 	
