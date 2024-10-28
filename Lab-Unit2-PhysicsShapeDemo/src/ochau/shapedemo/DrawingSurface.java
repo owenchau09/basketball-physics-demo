@@ -1,3 +1,4 @@
+package ochau.shapedemo;
 import java.awt.Color;
 import java.util.ArrayList;
 import agandhi523.sheeps.Circle;
@@ -230,7 +231,7 @@ public class DrawingSurface extends PApplet {
 					return;
 				}
 			}
-			PhysicsShape box = new PhysicsShape(new Rectangle(mouseX, mouseY, 50, 50));
+			PhysicsShape box = new PhysicsShape(new Rectangle(mouseX-25, mouseY-25, 50, 50));
 			box.color(Color.CYAN);
 			box.stroker(Color.BLACK);
 			box.strokePower(5);
