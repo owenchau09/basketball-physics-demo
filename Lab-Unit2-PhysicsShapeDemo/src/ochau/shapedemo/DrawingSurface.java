@@ -39,6 +39,7 @@ public class DrawingSurface extends PApplet {
 		pMouseX.add(null);
 		pMouseY.add(null);
 		holding = null;
+		holdingb = null;
 
 		double s = 2.0;
 
